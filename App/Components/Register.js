@@ -1,74 +1,115 @@
 var React = require('react-native');
 var ReactFireMixin = require('reactfire');
-var Firebase = require('firebase')
+var Firebase = require('firebase');
+var s = require('../Styles/styles');
 
 var {
-	View,
-	Text,
-	StyleSheet
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  Image,
+  TouchableHighlight,
+  ActivityIndicatorIOS,
+  LayoutAnimation
 } = React;
 
+var Dimensions = require('Dimensions')
+var screenWidth = Dimensions.get('window').width;
+var screenHeight = Dimensions.get('window').height;
+
 var styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
+  image: {
+    height: screenHeight,
+    width: screenWidth
+  }
 });
 
-var LoginContainer = React.createClass ({
-	mixins: [ReactFireMixin],
+var RegisterContainer = React.createClass ({
+  mixins: [ReactFireMixin],
   getInitialState: function() {
-    return {user: "yes",
-            o2: "no"}
+    return { loading: false }
   },
-  componentDidMount: function() {
-    console.log("gets here!");
+  login: function() {
+    this.props.changeAppState(0);
+  },
+  register: function() {
+    var ref = this.ref;
+    ref = new Firebase('https://shophopusers.firebaseio.com/');
+    var firstName = this.state.firstName;
+    var lastName = this.state.lastName;
+    var email = this.state.email;
     var self = this;
-    this.ref = new Firebase('https://shophopusers.firebaseio.com/');
 
-		this.ref.createUser({
-		  email    : "johnearle01@gmail.com",
-		  password : "j"
-		}, function(error, userData) {
-		  if (error) {
-		    console.log("Error creating user:", error);
-		  } else {
-		    console.log("Successfully created user account with uid:", userData.uid);
-		  }
-		});
-
-    this.ref.authWithPassword({
-      email    : "johnearle01@gmail.com",
-      password : "j"
-    }, function(error, authData) {
+    ref.createUser({
+      email    : this.state.email,
+      password : this.state.password
+    }, function(error, userData) {
       if (error) {
-        console.log("Login Failed!", error);
+        console.log("Error creating user:", error);
       } else {
-        console.log("Authenticated successfully with payload:", authData);
-        self.setState({user: authData});
+        var usersRef = ref.child("users");
+        usersRef.child(userData.uid).set({ 
+          firstName: firstName,
+          lastName: lastName,
+          email: email
+        });
+        self.props.changeAppState(0);
       }
     });
   },
   render: function() {
     var self = this;
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>{self.state.user}</Text>
-      </View>
-    )
+    if(this.state.loading) {
+      return (<LoadingContainer />  );
+    } else {
+      return (
+        <View style={[s.wrapper]}>
+            <Image style={[styles.image, s.c, s.wrapperStretch]} source={require('image!storefront')} >
+              <TextInput
+                placeholder="First name"
+                style={s.textInputLarge}
+                onChangeText={(firstName) => this.setState({firstName})}
+                value={this.state.firstName}
+              />
+              <TextInput
+                placeholder="Last name"
+                style={s.textInputLarge}
+                onChangeText={(lastName) => this.setState({lastName})}
+                value={this.state.lastName}
+              />
+              <TextInput
+                placeholder="Email address"
+                style={s.textInputLarge}
+                onChangeText={(email) => this.setState({email})}
+                value={this.state.email}
+              />
+              <TextInput
+                placeholder="Password"
+                style={s.textInputLarge}
+                secureTextEntry={true}
+                onChangeText={(password) => this.setState({password})}
+                value={this.state.password}
+              />
+              <TextInput
+                placeholder="Confirm password"
+                style={s.textInputLarge}
+              />
+              <TouchableHighlight
+                style={[s.buttonLarge, s.bgBlue, s.mb50]}
+                onPress={this.register}>
+                  <Text style={[s.textWhite, s.f, s.textLarge]}>Register</Text>
+              </TouchableHighlight>
+              <TouchableHighlight
+                style={[s.buttonLarge, s.bgGreen]}
+                onPress={this.login}>
+                  <Text style={[s.textWhite, s.f, s.textLarge]}>Log In</Text>
+              </TouchableHighlight>
+            </Image>
+        </View>
+      )
+    }
   }
 });
 
-module.exports = LoginContainer;
+module.exports = RegisterContainer;

@@ -29,8 +29,12 @@ var styles = StyleSheet.create({
     width: screenWidth/3,
   },
   icon: {
-    height: 30,
-    width: 30
+    height: 50,
+    width: 50
+  },
+  icon: {
+    height: 50,
+    width: 50
   }
 });
 
@@ -61,17 +65,15 @@ var Dashboard = React.createClass ({
             <View style={[s.bgGreen, s.alignBottom, s.c, {height: 60, width: screenWidth, bottom: screenWidth/3}]}>
               <Text style={[s.textWhite, s.bgNone, s.textCenter, s.textLarge, s.f]}>Start browsing</Text>
             </View>
-            <View style={[styles.tile, s.bgMagenta, s.cHor, s.alignBottom]}>
-              <Text style={[s.textWhite, s.bgNone, s.textCenter, s.textLarge, s.pLarge, s.f]}>Connect</Text>
-              <Image style={[styles.icon, s.mtMedium]} source={require('image!friendsIcon')} />
+            <View style={[styles.tile, s.bgMagenta, s.alignBottom]}>
+              <Image style={[styles.icon]} source={require('image!friendsIcon')} />
+              <Text style={[s.textWhite, s.bgNone, s.alignBottom, s.textLarge, s.pLarge, s.f]}>Friends</Text>
             </View>
-            <View style={[styles.tile, s.bgBlue, s.cHor, s.alignBottom, {left: screenWidth/3}]}>
-              <Text style={[s.textWhite, s.bgNone, s.textCenter, s.textLarge, s.pLarge, s.f]}>Feed</Text>
-              <Image style={[styles.icon, s.mtMedium]} source={require('image!feedIcon')} />
+            <View style={[styles.tile, s.bgBlue, s.alignBottom, {left: screenWidth/3}]}>
+              <Text style={[s.textWhite, s.bgNone, s.alignBottom, s.textLarge, s.pLarge, s.f]}>Feed</Text>
             </View>
-            <View style={[styles.tile, s.bgPurple, s.cHor, s.alignBottom, {left: 2*screenWidth/3}]}>
-              <Text style={[s.textWhite, s.bgNone, s.textCenter, s.textLarge, s.pLarge, s.f]}>History</Text>
-              <Image style={[styles.icon, s.mtMedium]} source={require('image!historyIcon')} />
+            <View style={[styles.tile, s.bgPurple, s.alignBottom, {left: 2*screenWidth/3}]}>
+              <Text style={[s.textWhite, s.bgNone, s.alignBottom, s.textLarge, s.pLarge, s.f]}>History</Text>
             </View>
           </View>
         </Image>

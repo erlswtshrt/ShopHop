@@ -9,21 +9,30 @@ var {
 	Text,
 	TextInput,
 	StyleSheet,
+  Image,
 	TouchableHighlight,
   ActivityIndicatorIOS,
   LayoutAnimation
 } = React;
+
+var Dimensions = require('Dimensions')
+var screenWidth = Dimensions.get('window').width;
+var screenHeight = Dimensions.get('window').height;
+
+var styles = StyleSheet.create({
+  image: {
+    height: screenHeight,
+    width: screenWidth
+  }
+});
 
 var LoginContainer = React.createClass ({
 	mixins: [ReactFireMixin],
 	getInitialState: function() {
 		return { loading: false }
 	},
-  componentWillMount: function() {
-    LayoutAnimation.linear();
-  },
-  componentWillUnmount: function() {
-    LayoutAnimation.linear();
+  register: function() {
+    this.props.changeAppState(1);
   },
   authenticate: function() {
     this.setState({loading: true})
@@ -46,23 +55,32 @@ var LoginContainer = React.createClass ({
       return (<LoadingContainer />  );
     } else {
       return (
-        <View style={[s.wrapperStretch, s.bgBlueGreen]}>
-          <TextInput
-  			    style={s.textInputLarge}
-  			    onChangeText={(email) => this.setState({email})}
-  			    value={this.state.email}
-  			  />
-  				<TextInput
-  			    style={s.textInputLarge}
-  			    secureTextEntry={true}
-  			    onChangeText={(password) => this.setState({password})}
-  			    value={this.state.password}
-  			  />
-  			  <TouchableHighlight
-  	        style={[s.buttonLarge, s.bgDarkBlue]}
-  	        onPress={this.authenticate}>
-  	          <Text style={[s.textWhite, s.f, s.textLarge]}>Start shopping!</Text>
-  	      </TouchableHighlight>
+        <View style={[s.wrapper]}>
+            <Image style={[styles.image, s.c, s.wrapperStretch]} source={require('image!storefront')} >
+              <TextInput
+                placeholder="Email address"
+                style={[s.textInputLarge, s.mbSmall]}
+                onChangeText={(email) => this.setState({email})}
+                value={this.state.email}
+              />
+              <TextInput
+                placeholder="Password"
+                style={s.textInputLarge}
+                secureTextEntry={true}
+                onChangeText={(password) => this.setState({password})}
+                value={this.state.password}
+              />
+              <TouchableHighlight
+                style={[s.buttonLarge, s.bgBlue, s.mb50]}
+                onPress={this.authenticate}>
+                  <Text style={[s.textWhite, s.f, s.textLarge]}>Log In</Text>
+              </TouchableHighlight>
+              <TouchableHighlight
+                style={[s.buttonLarge, s.bgGreen]}
+                onPress={this.register}>
+                  <Text style={[s.textWhite, s.f, s.textLarge]}>Register</Text>
+              </TouchableHighlight>
+            </Image>
         </View>
       )
     }
