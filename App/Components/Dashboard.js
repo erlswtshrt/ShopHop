@@ -2,6 +2,7 @@ var React = require('react-native');
 var ReactFireMixin = require('reactfire');
 var Firebase = require('firebase');
 var s = require('../Styles/styles');
+var Menu = require('./MainMenu');
 
 var {
   View,
@@ -54,27 +55,11 @@ var Dashboard = React.createClass ({
     var self = this;
     return (
       <View style={[s.wrapperCol]}>
-        <Image style={[styles.image, s.wrapperCol]} source={require('image!storefrontfilter')}>
+        <View style={[styles.image, s.wrapperCol]} source={require('image!storefrontfilter')}>
           <Text style={[s.textWhite, s.bgNone, s.textXLarge, s.f, s.mtXxxLarge, s.mlXxxLarge]}>Welcome,</Text>
           <Text style={[s.textWhite, s.bgNone, s.textXxLarge, s.f, s.mlXxxLarge]}>{self.state.user.firstName} {self.state.user.lastName}</Text>
-          <View style={[s.bgNone, s.wrapperRow]}>
-            <View style={[s.bgGreen, s.alignBottom, s.c, {height: 60, width: screenWidth, bottom: screenWidth/3}]}>
-              <Text style={[s.textWhite, s.bgNone, s.textCenter, s.textLarge, s.f]}>Start browsing</Text>
-            </View>
-            <View style={[styles.tile, s.bgMagenta, s.cHor, s.alignBottom]}>
-              <Text style={[s.textWhite, s.bgNone, s.textCenter, s.textLarge, s.pLarge, s.f]}>Connect</Text>
-              <Image style={[styles.icon, s.mtMedium]} source={require('image!friendsIcon')} />
-            </View>
-            <View style={[styles.tile, s.bgBlue, s.cHor, s.alignBottom, {left: screenWidth/3}]}>
-              <Text style={[s.textWhite, s.bgNone, s.textCenter, s.textLarge, s.pLarge, s.f]}>Feed</Text>
-              <Image style={[styles.icon, s.mtMedium]} source={require('image!feedIcon')} />
-            </View>
-            <View style={[styles.tile, s.bgPurple, s.cHor, s.alignBottom, {left: 2*screenWidth/3}]}>
-              <Text style={[s.textWhite, s.bgNone, s.textCenter, s.textLarge, s.pLarge, s.f]}>History</Text>
-              <Image style={[styles.icon, s.mtMedium]} source={require('image!historyIcon')} />
-            </View>
-          </View>
-        </Image>
+          <Menu />
+        </View>
       </View>)
   }
 });

@@ -1,6 +1,7 @@
 var React = require('react-native');
 var ReactFireMixin = require('reactfire');
 var Firebase = require('firebase');
+var LoginContainer = require('./LoginContainer')
 var s = require('../Styles/styles');
 
 var {
@@ -31,7 +32,7 @@ var RegisterContainer = React.createClass ({
     return { loading: false }
   },
   login: function() {
-    this.props.changeAppState(0);
+    this.props.navigator.pop();
   },
   register: function() {
     var ref = this.ref;
@@ -54,7 +55,10 @@ var RegisterContainer = React.createClass ({
           lastName: lastName,
           email: email
         });
-        self.props.changeAppState(0);
+        self.props.navigator.push({
+          component: Dashboard,
+          passProps: {  uid: userData.uid }
+        });
       }
     });
   },

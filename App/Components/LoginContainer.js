@@ -3,6 +3,9 @@ var ReactFireMixin = require('reactfire');
 var Firebase = require('firebase');
 var s = require('../Styles/styles');
 var LoadingContainer = require('./LoadingContainer');
+var FeedContainer = require('./FeedContainer');
+var Dashboard = require('./Dashboard')
+var Register = require('./Register');
 
 var {
 	View,
@@ -12,7 +15,8 @@ var {
   Image,
 	TouchableHighlight,
   ActivityIndicatorIOS,
-  LayoutAnimation
+  LayoutAnimation,
+  Modal
 } = React;
 
 var Dimensions = require('Dimensions')
@@ -29,33 +33,44 @@ var styles = StyleSheet.create({
 var LoginContainer = React.createClass ({
 	mixins: [ReactFireMixin],
 	getInitialState: function() {
-		return { loading: false }
+		return {  loading: false }
 	},
   register: function() {
-    this.props.changeAppState(1);
+    this.props.navigator.push({
+      component: Register
+    });
   },
   authenticate: function() {
-    this.setState({loading: true})
-  	var self = this;
+    var self = this;
     this.ref = new Firebase('https://shophopusers.firebaseio.com/');
-
+    this.setState({loading: true})
     this.ref.authWithPassword({
       email    : this.state.email,
       password : this.state.password
     }, function(error, authData) {
       if (error) {
       } else {
-        self.props.setUser(authData);
+        self.props.navigator.push({
+          component: FeedContainer,
+          passProps: {  uid: authData.uid },
+          title: 'Feed'
+        }, self.setState({loading: false}));
       }
     });
   },
   render: function() {
-    var self = this;
-    if(this.state.loading) {
-      return (<LoadingContainer />  );
-    } else {
       return (
-        <View style={[s.wrapper]}>
+        <View style={[s.wrapperCol]}>
+          <Modal
+            animated={true}
+            transparent={true}
+            visible={this.state.loading}>
+                <View style={[s.wrapper, s.bgPurple]}>
+                  <ActivityIndicatorIOS color='#ffffff' size="large"/>
+                  <Text style={[s.textWhite, s.f, s.mXxLarge, s.textLarge]}>Fetching profile...</Text>
+                </View>
+          </Modal>
+          <View style={[s.wrapperCol]}>
             <Image style={[styles.image, s.c, s.wrapperStretch]} source={require('image!storefront')} >
               <TextInput
                 placeholder="Email address"
@@ -81,9 +96,9 @@ var LoginContainer = React.createClass ({
                   <Text style={[s.textWhite, s.f, s.textLarge]}>Register</Text>
               </TouchableHighlight>
             </Image>
+          </View>
         </View>
       )
-    }
   }
 });
 

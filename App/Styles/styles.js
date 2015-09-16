@@ -17,7 +17,7 @@ var purple 		= '#916fb5'
 var red 		  = '#ef6c6c'
 var yellow 	  = '#f7db63'
 var white		  = '#ffffff'
-var navy      = '#3D4957'
+var navy      = '#3D4957'    
 
 module.exports = StyleSheet.create({
 
@@ -240,6 +240,26 @@ pbXxxLarge: {
   paddingBottom: 30,
 },
 
+// margin
+ptSmall: {
+  paddingTop: 5,
+},
+ptMedium: {
+  paddingTop: 8,
+},
+ptLarge: {
+  paddingTop: 10,
+},
+ptXLarge: {
+  paddingTop: 15,
+},
+ptXxLarge: {
+  paddingTop: 20,
+},
+ptXxxLarge: {
+  paddingTop: 30,
+},
+
 // font
 f: {
 	fontFamily: 'Avenir-Book',
@@ -328,6 +348,11 @@ wrapper: {
  },
 
  // wrapper
+flex: {
+    flex: 1,
+ },
+
+ // wrapper
 c: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -357,7 +382,17 @@ wrapperStretch: {
 
 alignBottom: {
   position: 'absolute',
-  bottom: 0
+  bottom: -5
+},
+
+alignBottom100: {
+  position: 'absolute',
+  bottom: -105
+},
+
+alignTop: {
+  position: 'absolute',
+  top: 0
 },
 
  h10: {
@@ -393,6 +428,7 @@ bgNone: {
 
  // text input
  textInputLarge: {
+    borderRadius: 5,
   	height: 45, 
   	backgroundColor: '#ffffff',
     fontFamily:'Avenir-Book',
@@ -406,6 +442,7 @@ bgNone: {
 },
 
   buttonLarge: {
+    borderRadius: 5,
   	height: 45,
     fontSize: 18,
   	justifyContent: 'center',

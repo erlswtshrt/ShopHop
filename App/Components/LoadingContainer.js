@@ -37,7 +37,7 @@ var LoadingContainer = React.createClass ({
           toValue: { x: 0, y: 0 }
     }).start();
   },
-  componentWillUnmount: function() {
+  componentDidUnmount: function() {
     Animated.spring(this.state.pan, {
           ...SPRING_CONFIG,
           toValue: { x: 0, y: screenHeight }
