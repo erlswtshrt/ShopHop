@@ -2,6 +2,7 @@ var React = require('react-native');
 var ReactFireMixin = require('reactfire');
 var Firebase = require('firebase');
 var LoginContainer = require('./LoginContainer')
+var Dasg
 var s = require('../Styles/styles');
 
 var {
@@ -14,6 +15,14 @@ var {
   ActivityIndicatorIOS,
   LayoutAnimation
 } = React;
+
+var ref = new Firebase('https://shophopusers.firebaseio.com/');
+var authData = ref.getAuth();
+var uid = null;
+
+if(authData !== null) {
+    uid = authData.uid;
+}
 
 var Dimensions = require('Dimensions')
 var screenWidth = Dimensions.get('window').width;
@@ -35,8 +44,6 @@ var RegisterContainer = React.createClass ({
     this.props.navigator.pop();
   },
   register: function() {
-    var ref = this.ref;
-    ref = new Firebase('https://shophopusers.firebaseio.com/');
     var firstName = this.state.firstName;
     var lastName = this.state.lastName;
     var email = this.state.email;
@@ -49,15 +56,14 @@ var RegisterContainer = React.createClass ({
       if (error) {
         console.log("Error creating user:", error);
       } else {
-        var usersRef = ref.child("users");
+        var usersRef = ref.child("mobileusers");
         usersRef.child(userData.uid).set({ 
           firstName: firstName,
           lastName: lastName,
           email: email
         });
         self.props.navigator.push({
-          component: Dashboard,
-          passProps: {  uid: userData.uid }
+          component: Dashboard
         });
       }
     });
@@ -103,11 +109,6 @@ var RegisterContainer = React.createClass ({
                 style={[s.buttonLarge, s.bgBlue, s.mb50]}
                 onPress={this.register}>
                   <Text style={[s.textWhite, s.f, s.textLarge]}>Register</Text>
-              </TouchableHighlight>
-              <TouchableHighlight
-                style={[s.buttonLarge, s.bgGreen]}
-                onPress={this.login}>
-                  <Text style={[s.textWhite, s.f, s.textLarge]}>Log In</Text>
               </TouchableHighlight>
             </Image>
         </View>

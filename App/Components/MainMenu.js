@@ -22,8 +22,8 @@ var screenHeight = Dimensions.get('window').height;
 
 var styles = StyleSheet.create({
   tile: {
-    height: screenWidth/4 + 100,
-    width: screenWidth/4,
+    height: screenWidth/5 + 100,
+    width: screenWidth/5,
     opacity: 0.95
   },
   icon: {
@@ -44,27 +44,36 @@ var MainMenu = React.createClass ({
   },
   getInitialState: function() {
     return {
-        pan: new Animated.ValueXY({ x: 0, y: 300 })
+        pan: new Animated.ValueXY({ x: 0, y: 250 })
     };
   },
   render: function() {
     StatusBarIOS.setHidden(true);
     var self = this;
     return (
-      <Animated.View style={[s.bgNone, { transform: this.state.pan.getTranslateTransform() }, s.wrapperRow]}>
-        <View style={[styles.tile, s.bgMagenta, s.cHor, s.alignBottom100]}>
-          <Image style={[styles.icon, s.mtXxxLarge]} source={require('image!connectIcon')} />
+      <View style={[s.bgNone, s.wrapperRow]}>
+        <TouchableHighlight
+                  style={[styles.tile, s.bgMagenta, s.cHor, s.alignBottom100]}
+                  onPress={this.props.navigateToConnections}>
+          <Image style={[styles.icon, s.mtXxLarge]} source={require('image!connectIcon')} />
+        </TouchableHighlight>
+        <View style={[styles.tile, s.bgRed, s.cHor, s.alignBottom100, {left: 1*screenWidth/5}]}>
+          <Image style={[styles.icon, s.mtXxLarge]} source={require('image!historyIcon')} />
         </View>
-        <View style={[styles.tile, s.bgBlue, s.cHor, s.alignBottom100, {left: screenWidth/4}]}>
-          <Image style={[styles.icon, s.mtXxxLarge]} source={require('image!feedIcon')} />
+        <View style={[styles.tile, s.bgOrange, s.cHor, s.alignBottom100, {left: 2*screenWidth/5}]}>
+          <Image style={[styles.icon, s.mtXxLarge]} source={require('image!profileIcon')} />
         </View>
-        <View style={[styles.tile, s.bgPurple, s.cHor, s.alignBottom100, {left: 2*screenWidth/4}]}>
-          <Image style={[styles.icon, s.mtXxxLarge]} source={require('image!historyIcon')} />
-        </View>
-        <View style={[styles.tile, s.bgGreen, s.cHor, s.alignBottom100, {left: 3*screenWidth/4}]}>
-          <Image style={[styles.icon, s.mtXxxLarge]} source={require('image!browseIcon')} />
-        </View>
-      </Animated.View>);
+        <TouchableHighlight
+                  style={[styles.tile, s.bgGreen, s.cHor, s.alignBottom100, {left: 3*screenWidth/5}]}
+                  onPress={this.props.navigateToBrowse}>
+          <Image style={[styles.icon, s.mtXxLarge]} source={require('image!browseIcon')} />
+        </TouchableHighlight>
+        <TouchableHighlight
+                  style={[styles.tile, s.bgBlue, s.cHor, s.alignBottom100, {left: 4*screenWidth/5}]}
+                  onPress={this.props.navigateToFeed}>
+          <Image style={[styles.icon, s.mtXxLarge]} source={require('image!feedIcon')} />
+        </TouchableHighlight>
+      </View>);
   }
 });
 

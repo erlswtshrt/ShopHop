@@ -96,6 +96,10 @@ mtXxxLarge: {
   marginTop: 30,
 },
 
+mt100: {
+  marginTop: 100,
+},
+
 // margin
 mbSmall: {
   marginBottom: 5,
@@ -395,6 +399,11 @@ alignTop: {
   top: 0
 },
 
+alignTop100: {
+  position: 'absolute',
+  top: -100
+},
+
  h10: {
  	height: 10,
  },
@@ -439,6 +448,20 @@ bgNone: {
   	paddingRight: 15,
   	padding: 5,
     opacity: 0.95
+},
+
+ // text input
+ textInputSearch: {
+    borderRadius: 15,
+    height: 30, 
+    backgroundColor: '#ffffff',
+    fontFamily:'Avenir-Book',
+    fontSize: 14,
+    marginLeft: 30,
+    marginRight: 30,
+    paddingLeft: 15,
+    paddingRight: 15,
+    padding: 5
 },
 
   buttonLarge: {

@@ -19,6 +19,10 @@ var {
   Modal
 } = React;
 
+var ref = new Firebase('https://shophopusers.firebaseio.com/');
+var authData = null;
+var uid = null;
+
 var Dimensions = require('Dimensions')
 var screenWidth = Dimensions.get('window').width;
 var screenHeight = Dimensions.get('window').height;
@@ -42,9 +46,8 @@ var LoginContainer = React.createClass ({
   },
   authenticate: function() {
     var self = this;
-    this.ref = new Firebase('https://shophopusers.firebaseio.com/');
     this.setState({loading: true})
-    this.ref.authWithPassword({
+    ref.authWithPassword({
       email    : this.state.email,
       password : this.state.password
     }, function(error, authData) {
@@ -52,13 +55,25 @@ var LoginContainer = React.createClass ({
       } else {
         self.props.navigator.push({
           component: FeedContainer,
-          passProps: {  uid: authData.uid },
           title: 'Feed'
         }, self.setState({loading: false}));
       }
     });
   },
+  componentDidMount: function() {
+    authData = ref.getAuth();
+    if(authData !== null) uid = authData.uid;
+    console.log("---->>>>>> " + uid);
+    console.log(ref.getAuth());
+  },
   render: function() {
+      if(uid !== null) {
+        self.props.navigator.push({
+          component: FeedContainer,
+          title: 'Feed'
+        })
+      };
+
       return (
         <View style={[s.wrapperCol]}>
           <Modal
@@ -76,15 +91,13 @@ var LoginContainer = React.createClass ({
                 placeholder="Email address"
                 style={[s.textInputLarge, s.mbSmall]}
                 onChangeText={(email) => this.setState({email})}
-                value={this.state.email}
-              />
+                value={this.state.email}/>
               <TextInput
                 placeholder="Password"
                 style={s.textInputLarge}
                 secureTextEntry={true}
                 onChangeText={(password) => this.setState({password})}
-                value={this.state.password}
-              />
+                value={this.state.password}/>
               <TouchableHighlight
                 style={[s.buttonLarge, s.bgBlue, s.mb50]}
                 onPress={this.authenticate}>

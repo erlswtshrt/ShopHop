@@ -16,6 +16,10 @@ var {
   StatusBarIOS
 } = React;
 
+var ref = new Firebase('https://shophopusers.firebaseio.com/');
+var authData = null;
+var uid = null;
+
 var Dimensions = require('Dimensions')
 var screenWidth = Dimensions.get('window').width;
 var screenHeight = Dimensions.get('window').height;
@@ -41,11 +45,12 @@ var Dashboard = React.createClass ({
     return {user: tempUser}
   },
   componentDidMount: function() {
+    authData = ref.getAuth();
+    if(authData !== null) uid = authData.uid;
+
     var self=this;
-    var ref = this.ref;
-    ref = new Firebase('https://shophopusers.firebaseio.com/');
-    var usersRef = ref.child("users");
-    var userRef = usersRef.child(this.props.uid);
+    var usersRef = ref.child("mobileusers");
+    var userRef = usersRef.child(uid);
     userRef.on("value", function(snapshot) {
       self.setState({user: snapshot.val()});
     });
